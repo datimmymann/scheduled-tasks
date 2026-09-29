@@ -1,6 +1,5 @@
 import requests
 import os
-api_key = "4e3f31b1586db3420f235f07a7c42e74"
 my_latitude = os.environ.get("LAT")
 my_longitude = os.environ.get("LONG")
 app_id = os.environ.get("APP_ID")

@@ -1,0 +1,25 @@
+import requests
+import os
+api_key = "4e3f31b1586db3420f235f07a7c42e74"
+my_latitude = os.environ.get("LAT")
+my_longitude = os.environ.get("LONG")
+app_id = os.environ.get("APP_ID")
+from twilio.rest import Client
+
+account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
+
+client = Client(account_sid, auth_token)
+response = requests.get(f"https://api.openweathermap.org/data/2.5/forecast?lat={my_latitude}&lon={my_longitude}&cnt=4&{app_id}")
+response.raise_for_status()
+data = response.json()
+twelve_hr = []
+for day in data["list"]:
+    twelve_hr.append(day["weather"][0]["main"])
+for thing in twelve_hr:
+    if thing == "Rain":
+        message = client.messages.create(
+            body="sms_appointment_reminders",
+            from_="+17372324091",
+            to=os.environ.get("MY_PHONE_NUMBER"),
+        )
